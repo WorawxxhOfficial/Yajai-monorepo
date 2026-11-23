@@ -1,0 +1,130 @@
+/* YaJai web prototype · one visual world: warm studio, teal device, sun/orange for state.
+   Inter for Latin text; Thai glyphs fall back to Anuphan, which Inter does not cover. */
+:root {
+  --bg: #f6f2ea;
+  --panel: #ffffff;
+  --ink: #1e3a37;
+  --body: #4a5855;
+  --muted: #6e7b77;
+  --teal: #0e6a65;
+  --teal-deep: #0a504c;
+  --mint: #e3f2eb;
+  --line: #e7e0d3;
+  --orange: #e07a2f;
+  --peach: #fdebdc;
+  --font: 'Inter Variable', 'Anuphan', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+.app { height: 100%; display: flex; flex-direction: column; }
+
+.topbar { display: flex; align-items: center; gap: 16px; padding: 14px 22px; flex-wrap: wrap; }
+.mark {
+  width: 44px; height: 44px; border-radius: 14px; background: var(--teal); color: #fff8ec;
+  display: grid; place-items: center; font-weight: 700; font-size: 18px; flex: none;
+}
+.titles { flex: 1; min-width: 220px; }
+.titles h1 { font-size: 21px; font-weight: 650; letter-spacing: -0.01em; margin: 0; line-height: 1.3; text-wrap: balance; }
+.titles p { margin: 0; color: var(--muted); font-size: 14px; }
+.size-chip { background: var(--mint); color: var(--teal-deep); border-radius: 999px; padding: 6px 14px; font-size: 14px; font-weight: 600; }
+
+.layout {
+  flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; padding: 0 16px 16px;
+}
+.stage-col { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.stage {
+  position: relative; flex: 1; min-height: 420px; border-radius: 28px; overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 28%, #ffffff 0%, #f2ede4 62%, #e8e0d2 100%);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.stage-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.hint {
+  position: absolute; left: 16px; top: 14px; margin: 0; font-size: 13px; color: var(--muted);
+  background: rgba(255, 255, 255, 0.78); padding: 5px 12px; border-radius: 999px; pointer-events: none;
+}
+.status {
+  position: absolute; left: 50%; top: 14px; transform: translateX(-50%); background: var(--ink); color: #fff8ec;
+  font-size: 14px; padding: 7px 16px; border-radius: 999px; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  white-space: nowrap; max-width: 90%; overflow: hidden; text-overflow: ellipsis;
+}
+.status.on { opacity: 1; }
+.pin {
+  position: absolute; left: 0; top: 0; width: 28px; height: 28px; margin: -14px 0 0 -14px; padding: 0;
+  border-radius: 999px; border: 2px solid #fff; background: var(--teal); color: #fff8ec; font-size: 13px; font-weight: 700;
+  display: grid; place-items: center; box-shadow: 0 4px 10px rgba(30, 58, 55, 0.25); transition: opacity 0.25s, background 0.2s;
+}
+.pin.sel { background: var(--orange); }
+.pin.hide { opacity: 0; pointer-events: none; }
+
+.controls {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--panel);
+  border-radius: 22px; padding: 12px 14px; box-shadow: 0 6px 20px rgba(30, 58, 55, 0.06);
+}
+.btn {
+  border: 0; border-radius: 999px; padding: 10px 18px; font-weight: 600; font-size: 15px;
+  background: var(--mint); color: var(--teal-deep); transition: transform 0.15s, background 0.2s;
+}
+.btn:active { transform: scale(0.97); }
+.btn.primary { background: var(--teal); color: #fff8ec; }
+.btn.warm { background: var(--peach); color: #9a4a16; }
+.btn[aria-pressed='true']:not(.primary) { background: var(--ink); color: #fff8ec; }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.slider { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 220px; font-size: 14px; color: var(--muted); }
+.slider input { flex: 1; accent-color: var(--teal); }
+.sep { width: 1px; height: 28px; background: var(--line); }
+
+.guide {
+  background: var(--panel); border-radius: 28px; padding: 20px; display: flex; flex-direction: column; gap: 16px;
+  overflow: auto; min-height: 0; box-shadow: 0 6px 20px rgba(30, 58, 55, 0.06);
+}
+.guide h2 { font-size: 14px; font-weight: 600; color: var(--muted); margin: 0; letter-spacing: 0.02em; }
+.plist { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.plist button {
+  display: flex; gap: 8px; align-items: center; text-align: left; border: 0; background: var(--bg);
+  border-radius: 14px; padding: 7px 10px; font-size: 14px; color: var(--ink); line-height: 1.3;
+}
+.plist .n {
+  flex: none; width: 22px; height: 22px; border-radius: 999px; background: var(--teal); color: #fff8ec;
+  font-size: 12px; font-weight: 700; display: grid; place-items: center; font-variant-numeric: tabular-nums;
+}
+.plist button[aria-pressed='true'] { background: var(--peach); }
+.plist button[aria-pressed='true'] .n { background: var(--orange); }
+.detail { border-radius: 22px; background: var(--mint); padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.detail.empty { background: var(--bg); color: var(--muted); }
+.detail h3 { font-size: 20px; font-weight: 650; margin: 0; color: var(--teal-deep); line-height: 1.3; text-wrap: balance; }
+.detail p { margin: 0; color: var(--body); }
+.detail.empty p { color: var(--muted); }
+.detail ul { margin: 0; padding-left: 20px; color: var(--body); }
+.detail li { margin: 2px 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { background: #fff; border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 600; color: var(--teal-deep); }
+.chip.role { background: var(--ink); color: #fff8ec; }
+.legend { font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+.foot { padding: 0 22px 14px; font-size: 13px; color: var(--muted); }
+
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  .stage { min-height: 62vh; }
+  .guide { overflow: visible; }
+}
+@media (max-width: 480px) {
+  .titles h1 { font-size: 18px; }
+  .plist { grid-template-columns: 1fr; }
+  .sep { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn, .status, .pin { transition: none; }
+}
